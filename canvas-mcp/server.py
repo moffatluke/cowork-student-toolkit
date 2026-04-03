@@ -96,12 +96,13 @@ def _handle_error(e: Exception) -> str:
 
 
 def _fmt_date(date_str: Optional[str]) -> str:
-    """Format an ISO date string into a human-readable form."""
+    """Format an ISO date string into a human-readable UTC form."""
     if not date_str:
         return "No due date"
     try:
-        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
-        return dt.strftime("%a %b %-d, %Y at %-I:%M %p UTC")
+        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00")).astimezone(timezone.utc)
+        hour = dt.strftime("%I").lstrip("0") or "0"
+        return f"{dt.strftime('%a %b')} {dt.day}, {dt.year} at {hour}:{dt.strftime('%M')} {dt.strftime('%p')} UTC"
     except Exception:
         return date_str
 
@@ -763,3 +764,4 @@ async def canvas_get_grades(params: CourseGradesInput) -> str:
 
 if __name__ == "__main__":
     mcp.run()
+

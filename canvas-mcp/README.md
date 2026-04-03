@@ -67,6 +67,17 @@ Replace `/absolute/path/to/canvas-mcp/server.py` with the actual path where you 
 
 > **Note:** You can put the token directly in the `env` block (as shown above) instead of using a `.env` file — whichever you prefer. Never commit either to version control.
 
+## Local Development
+
+Install the development dependencies and run the test suite before pushing changes:
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+The tests cover the shared request helpers, pagination behavior, and user-facing error messages.
+
 ## Usage Examples
 
 Once connected, just ask Claude naturally:
@@ -76,3 +87,4 @@ Once connected, just ask Claude naturally:
 - *"What are my current grades?"*
 - *"Any announcements from my professors?"*
 - *"Run my morning briefing"* — the `morning-briefing` skill will pull Canvas data automatically
+

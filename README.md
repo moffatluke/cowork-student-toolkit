@@ -55,7 +55,7 @@ Saves the morning briefing and wrap-up to your Obsidian vault as a clean markdow
 **1. Clone and install dependencies**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cowork-student-toolkit.git
+git clone https://github.com/moffatluke/cowork-student-toolkit.git
 cd cowork-student-toolkit/canvas-mcp
 pip install -r requirements.txt
 ```
@@ -93,6 +93,16 @@ Replace:
 - `https://yourschool.instructure.com` with your school's Canvas URL
 
 Restart Claude after saving. You should see the Canvas tools appear in the tool list.
+
+**4. Run the Canvas MCP tests locally**
+
+```bash
+cd cowork-student-toolkit/canvas-mcp
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+The same test suite runs in GitHub Actions on pushes and pull requests that touch the Canvas MCP server.
 
 ---
 
@@ -135,3 +145,4 @@ Students who:
 ## License
 
 MIT
+
