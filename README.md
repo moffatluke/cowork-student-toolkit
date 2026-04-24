@@ -68,41 +68,54 @@ pip install -r requirements.txt
 4. Click **+ New Access Token**
 5. Name it (e.g. "Claude MCP"), click **Generate Token**, copy it
 
-**3. Add to Claude's MCP config**
+**3. Create your `.env` file**
 
-Open your Claude MCP configuration file (usually `AppData\Roaming\Claude\claude_desktop_config.json` on Windows or `~/Library/Application Support/Claude/claude_desktop_config.json` on Mac) and add:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and fill in your values:
+
+```
+CANVAS_API_TOKEN=your_token_here
+CANVAS_BASE_URL=https://yourschool.instructure.com
+```
+
+The server loads this file automatically — your credentials stay out of your Claude config.
+
+**4. Register with Claude**
+
+**Claude Desktop** — add to your MCP config file:
+- Windows: `AppData\Roaming\Claude\claude_desktop_config.json`
+- Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 ```json
 {
   "mcpServers": {
     "canvas": {
       "command": "python",
-      "args": ["C:/path/to/cowork-student-toolkit/canvas-mcp/server.py"],
-      "env": {
-        "CANVAS_API_TOKEN": "your_token_here",
-        "CANVAS_BASE_URL": "https://yourschool.instructure.com"
-      }
+      "args": ["C:/path/to/cowork-student-toolkit/canvas-mcp/server.py"]
     }
   }
 }
 ```
 
-Replace:
-- `C:/path/to/...` with the actual path where you cloned the repo
-- `your_token_here` with the token you generated
-- `https://yourschool.instructure.com` with your school's Canvas URL
-
-Restart Claude after saving. You should see the Canvas tools appear in the tool list.
-
-**4. Run the Canvas MCP tests locally**
+**Claude Code CLI** — run once in your terminal:
 
 ```bash
-cd cowork-student-toolkit/canvas-mcp
+claude mcp add canvas python /path/to/cowork-student-toolkit/canvas-mcp/server.py
+```
+
+Replace the path with wherever you cloned the repo. Restart Claude after saving — you should see the Canvas tools appear in the tool list.
+
+**5. Run the tests (optional)**
+
+```bash
 pip install -r requirements-dev.txt
 pytest -q
 ```
 
-The same test suite runs in GitHub Actions on pushes and pull requests that touch the Canvas MCP server.
+The same test suite runs in GitHub Actions on every push.
 
 ---
 
@@ -136,13 +149,12 @@ Students who:
 
 ## Security Notes
 
-- Your Canvas API token is **never** stored in this code. It lives only in your local MCP config or `.env` file, which is excluded from version control via `.gitignore`.
+- Your Canvas API token lives only in your local `.env` file, which is excluded from version control via `.gitignore`. Never commit it.
 - The MCP server only makes read-only API calls. It cannot submit assignments, post grades, or modify anything in Canvas.
-- Token scope: Canvas access tokens grant broad read access to your account. Treat them like passwords — do not share them or commit them to any repo.
+- Token scope: Canvas access tokens grant broad read access to your account. Treat them like passwords — do not share them.
 
 ---
 
 ## License
 
 MIT
-

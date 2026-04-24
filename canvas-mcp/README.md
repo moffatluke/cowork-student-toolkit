@@ -32,44 +32,49 @@ pip install -r requirements.txt
 5. Give it a name (e.g. "Claude MCP") and click **Generate Token**
 6. Copy the token — you won't see it again
 
-### 3. Configure environment variables
-
-Copy `.env.example` to `.env` and fill in your values:
+### 3. Create your `.env` file
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env`:
-- `CANVAS_API_TOKEN` — the token you just generated
-- `CANVAS_BASE_URL` — your school's Canvas URL (e.g. `https://canvas.yourschool.edu`)
+Edit `.env` and fill in your values:
 
-### 4. Register with Claude Code (MCP config)
+```
+CANVAS_API_TOKEN=your_token_here
+CANVAS_BASE_URL=https://yourschool.instructure.com
+```
 
-Add this to your Claude MCP configuration (e.g. `claude_desktop_config.json`):
+The server loads this file automatically at startup.
+
+### 4. Register with Claude
+
+**Claude Desktop** — add to `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "canvas": {
       "command": "python",
-      "args": ["/absolute/path/to/canvas-mcp/server.py"],
-      "env": {
-        "CANVAS_API_TOKEN": "your_token_here",
-        "CANVAS_BASE_URL": "https://yourschool.instructure.com"
-      }
+      "args": ["/absolute/path/to/canvas-mcp/server.py"]
     }
   }
 }
 ```
 
-Replace `/absolute/path/to/canvas-mcp/server.py` with the actual path where you cloned this repo.
+**Claude Code CLI** — run once in your terminal:
 
-> **Note:** You can put the token directly in the `env` block (as shown above) instead of using a `.env` file — whichever you prefer. Never commit either to version control.
+```bash
+claude mcp add canvas python /absolute/path/to/canvas-mcp/server.py
+```
+
+Replace `/absolute/path/to/canvas-mcp/server.py` with the actual path. Restart Claude after saving.
+
+> **Alternative:** If you'd rather not use a `.env` file, you can pass credentials directly in the MCP config `env` block instead — but never commit those values to version control.
 
 ## Local Development
 
-Install the development dependencies and run the test suite before pushing changes:
+Install the development dependencies and run the test suite:
 
 ```bash
 pip install -r requirements-dev.txt
@@ -87,4 +92,3 @@ Once connected, just ask Claude naturally:
 - *"What are my current grades?"*
 - *"Any announcements from my professors?"*
 - *"Run my morning briefing"* — the `morning-briefing` skill will pull Canvas data automatically
-
