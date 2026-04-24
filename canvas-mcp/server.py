@@ -13,6 +13,10 @@ from datetime import datetime, timezone
 import httpx
 from pydantic import BaseModel, Field, ConfigDict
 from mcp.server.fastmcp import FastMCP
+from dotenv import load_dotenv
+
+# Load .env from the script's own directory, regardless of CWD
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"), override=True)
 
 # ─────────────────────────────────────────────
 # Server initialization
